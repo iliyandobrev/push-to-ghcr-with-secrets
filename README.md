@@ -58,7 +58,7 @@ However, you can use `dockerfile` input to **specify a different path** (relativ
 
 * `github_token` (**required**): Your `secrets.GITHUB_TOKEN`
 * `image_name` (**required**): Image name, e.g. `my-user-name/my-repo` (will be lowercased internally)
-* `secret` (defaults to `fake_secret=fake_value`) : A secret to pass to the build phase, taking input from an environment variable. You must set the env var on the runner to use it. 
+* `secret` (defaults to `secret=fake_value`) : A secret value to pass to the build phase, taking input from an environment variable. You must set the env var on the runner to use it. 
 * `dockerfile` (defaults to `./Dockerfile`): A path to the Dockerfile (if it's not in the repository's root directory)
 * `context` (defaults to `.`): A path to the context in which the build will happen, see https://docs.docker.com/engine/reference/commandline/build/
 * `repository` (defaults to `ghcr.io`): Docker repository to push an image to

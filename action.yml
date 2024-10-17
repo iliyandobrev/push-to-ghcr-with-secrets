@@ -1,6 +1,6 @@
-name: "push-to-ghcr"
-author: "@macbre"
-description: "This action simplifies pushes of Docker images ot ghcr.io repository"
+name: "push-to-ghcr-with-secrets"
+author: "@iliyandobrev"
+description: "This action builds on top of [macbre/push-to-ghcr](https://github.com/macbre/push-to-ghcr) and adds passing secrets at build time."
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#branding
 branding:
   icon: "arrow-up-circle"

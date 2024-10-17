@@ -25,6 +25,11 @@ inputs:
     required: false
     default: "."
 
+  secret:
+    description: "A secret to pass to the build phase, taking input from environment variables. You must set the env var on the runner to use it.
+    required: false
+    default: "fake_secret=fake_value"
+
   repository:
     description: "Docker repository to push an image to, defaults to ghcr.io"
     required: true
@@ -61,6 +66,7 @@ runs:
         DOCKER_IO_TOKEN: ${{ inputs.docker_io_token }}
         IMAGE_NAME: ${{ inputs.image_name }}
         IMAGE_TAG: ${{ inputs.image_tag }}
+        SECRET: ${{ inputs.secret }}
 
       run: |
         echo "Using $(docker -v)"
@@ -104,6 +110,8 @@ runs:
           --build-arg GITHUB_SHA=${GITHUB_SHA} \
           \
           --build-arg ${{ inputs.build_arg }} \
+          \
+          --secret id=${SECRET}
           \
           --tag ${{ inputs.repository }}/${IMAGE_NAME}:${COMMIT_TAG} \
           --tag docker.io/${IMAGE_NAME}:${COMMIT_TAG} \

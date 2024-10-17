@@ -1,8 +1,6 @@
 # push-to-ghcr
 
-[![ghcr pulls](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fipitio%2Fghcr-pulls%2Fmaster%2Findex.json&query=%24%5B%3F(%40.owner%3D%3D%22macbre%22%20%26%26%20%40.repo%3D%3D%22push-to-ghcr%22%20%26%26%20%40.image%3D%3D%22push-to-ghcr%22)%5D.pulls&logo=github&label=pulls)](https://github.com/macbre/push-to-ghcr/pkgs/container/push-to-ghcr)
-
-This action simplifies pushes of Docker images to [the GitHub Containers Registry at ghcr.io](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+This action builds on top of [macbre/push-to-ghcr](https://github.com/macbre/push-to-ghcr) and adds passing secrets at build time.
 
 `Dockerfile` from your repository is build and published on:
 
@@ -45,6 +43,7 @@ jobs:
         with:
           image_name: ${{ github.repository }}  # it will be lowercased internally
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          secret: ${{ secrets.YOUR_SECRET_VALUE }} # optional, also secret name is set from your Dockerfile and this is only used for the value
           # optionally push to the Docker Hub (docker.io)
           # docker_io_token: ${{ secrets.DOCKER_IO_ACCESS_TOKEN }}  # see https://hub.docker.com/settings/security
           # customize the username to be used when pushing to the Docker Hub
@@ -59,6 +58,7 @@ However, you can use `dockerfile` input to **specify a different path** (relativ
 
 * `github_token` (**required**): Your `secrets.GITHUB_TOKEN`
 * `image_name` (**required**): Image name, e.g. `my-user-name/my-repo` (will be lowercased internally)
+* `secret` (defaults to `fake_secret=fake_value`) : A secret to pass to the build phase, taking input from an environment variable. You must set the env var on the runner to use it. 
 * `dockerfile` (defaults to `./Dockerfile`): A path to the Dockerfile (if it's not in the repository's root directory)
 * `context` (defaults to `.`): A path to the context in which the build will happen, see https://docs.docker.com/engine/reference/commandline/build/
 * `repository` (defaults to `ghcr.io`): Docker repository to push an image to

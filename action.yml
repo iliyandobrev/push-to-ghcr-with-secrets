@@ -26,9 +26,9 @@ inputs:
     default: "."
 
   secret:
-    description: "A secret to pass to the build phase, taking input from environment variables. You must set the env var on the runner to use it.
+    description: "A secret to pass to the build phase, taking input from environment variables. You must set the env var on the runner to use it."
     required: false
-    default: "fake_secret=fake_value"
+    default: "fake_secret"
 
   repository:
     description: "Docker repository to push an image to, defaults to ghcr.io"
@@ -66,7 +66,7 @@ runs:
         DOCKER_IO_TOKEN: ${{ inputs.docker_io_token }}
         IMAGE_NAME: ${{ inputs.image_name }}
         IMAGE_TAG: ${{ inputs.image_tag }}
-        SECRET: ${{ inputs.secret }}
+        SECRET_VALUE: ${{ inputs.secret }}
 
       run: |
         echo "Using $(docker -v)"
@@ -100,6 +100,15 @@ runs:
 
         # https://docs.docker.com/develop/develop-images/build_enhancements/
         # https://docs.docker.com/engine/reference/commandline/build/#specifying-external-cache-sources
+
+        echo "Setting environment variable."
+        export secret=${SECRET_VALUE}
+        if [ -z "$secret" ]; then 
+          echo "Environment variable is NULL"
+        else 
+          echo "Created environment variable"
+        fi
+
         set -x
         >&0 docker build \
           --file ${{ inputs.dockerfile }} \
@@ -111,7 +120,7 @@ runs:
           \
           --build-arg ${{ inputs.build_arg }} \
           \
-          --secret id=${SECRET}
+          --secret id=secret
           \
           --tag ${{ inputs.repository }}/${IMAGE_NAME}:${COMMIT_TAG} \
           --tag docker.io/${IMAGE_NAME}:${COMMIT_TAG} \

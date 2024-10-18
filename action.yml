@@ -120,7 +120,7 @@ runs:
           \
           --build-arg ${{ inputs.build_arg }} \
           \
-          --secret id=secret
+          --secret id=secret \
           \
           --tag ${{ inputs.repository }}/${IMAGE_NAME}:${COMMIT_TAG} \
           --tag docker.io/${IMAGE_NAME}:${COMMIT_TAG} \

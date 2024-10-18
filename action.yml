@@ -112,7 +112,7 @@ runs:
         set -x
         >&0 docker build \
           --file ${{ inputs.dockerfile }} \
-          --cache-from ${{ inputs.repository }}/${IMAGE_NAME}:latest \
+          --no-cache \
           --build-arg BUILDKIT_INLINE_CACHE=1 \
           \
           --build-arg BUILD_DATE=${BUILD_DATE} \
